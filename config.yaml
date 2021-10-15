@@ -34,7 +34,7 @@ params:
     heading: Page couldn't be found
     text: Please visit [this page](/)
   favicon: favicon.ico
-  footer: Anaanya Chopra MFA 
+  footer: 
     copyright: London Business School
     enable: yes
     quicklinks:
