@@ -1,0 +1,61 @@
+---
+categories:
+- ""
+- ""
+date: "2017-10-31T21:28:43-05:00"
+description: "To show the effects of climate change through temperature deviations per year and per month"
+draft: false
+image: Climate Change_2.jpg
+keywords: ""
+slug: ipsum
+title: Climate change Analysis
+---
+
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+
+<p>The following analysis is to show the effect of climate change. We use the dataframe of temperature deviations from the base value since 1975 to show how temperatures are becoming increasingly volatile. Due to my past experience in the renewables space, this project is something that needs more attention.</p>
+<p>First we download the relevant dataset</p>
+<pre class="r"><code>weather &lt;- 
+  read_csv(&quot;https://data.giss.nasa.gov/gistemp/tabledata_v4/NH.Ts+dSST.csv&quot;, 
+           skip = 1, 
+           na = &quot;***&quot;)</code></pre>
+<pre><code>## Rows: 142 Columns: 19</code></pre>
+<pre><code>## -- Column specification --------------------------------------------------------
+## Delimiter: &quot;,&quot;
+## dbl (19): Year, Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec, ...</code></pre>
+<pre><code>## 
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<p>The table is now being pivoted to a longer table so we can see the relevant rows and columns more clearly</p>
+<pre class="r"><code>tidyweather &lt;- weather %&gt;% 
+  select(1:13) %&gt;% 
+  pivot_longer(cols=2:13,
+               names_to=&quot;Month&quot;,
+               values_to=&quot;delta&quot;)</code></pre>
+<p>The dataframe needs to be shown in a graphical manner in order to make more sense. By plotting a scatter plot with the x-axis labeolled as the date and the y axis showing the deviation of data from it’s base value. The red line is the line graph plotting the same points.</p>
+<pre class="r"><code>tidyweather &lt;- tidyweather %&gt;%
+  mutate(date = ymd(paste(as.character(Year), Month, &quot;1&quot;)),
+         month = month(date, label=TRUE),
+         year = year(date))
+
+ggplot(tidyweather, aes(x=date, y = delta))+
+  geom_point()+
+  geom_smooth(color=&quot;red&quot;) +
+  theme_bw() +
+  labs (
+    title = &quot;Weather Anomalies&quot;, 
+    subtitle = &quot;Measured as deviations from base value in degrees celsius&quot;, 
+    y=&quot;Temperature deviation from base value&quot;, 
+    x=&quot;Year&quot;
+    )</code></pre>
+<pre><code>## `geom_smooth()` using method = &#39;gam&#39; and formula &#39;y ~ s(x, bs = &quot;cs&quot;)&#39;</code></pre>
+<pre><code>## Warning: Removed 3 rows containing non-finite values (stat_smooth).</code></pre>
+<pre><code>## Warning: Removed 3 rows containing missing values (geom_point).</code></pre>
+<p><img src="/blogs/blog1_files/figure-html/scatter_plot-1.png" width="672" /></p>
+<p>From the graph it becomes very clear that since c. 1975, temperature deviations from the base value have consistently increased.</p>
+<pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
+<pre><code>## Warning: Removed 3 rows containing non-finite values (stat_smooth).</code></pre>
+<pre><code>## Warning: Removed 3 rows containing missing values (geom_point).</code></pre>
+<p><img src="/blogs/blog1_files/figure-html/facet_wrap-1.png" width="672" /></p>
+<p>These charts show that temperature deviations in individual months vary between each other. For instance, in the winter months (December, January, February), deviations are particularly significant when compared to the summer months (June, July). Especially in areas with a lot of permafrost and icecaps, warmer winters can cause substantial ice-melts.</p>

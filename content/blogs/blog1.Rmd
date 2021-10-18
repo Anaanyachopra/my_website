@@ -1,0 +1,93 @@
+---
+categories:
+- ""
+- ""
+date: "2017-10-31T21:28:43-05:00"
+description: "To show the effects of climate change through temperature deviations per year and per month"
+draft: false
+image: Climate Change_2.jpg
+keywords: ""
+slug: ipsum
+title: Climate change Analysis
+---
+
+The following analysis is to show the effect of climate change. We use the dataframe of temperature deviations from the base value since 1975 to show how temperatures are becoming increasingly volatile. Due to my past experience in the renewables space, this project is something that needs more attention.
+
+```{r load-libraries, include=FALSE}
+library(tidyverse)  # Load ggplot2, dplyr, and all the other tidyverse packages
+library(mosaic)
+library(ggthemes)
+library(lubridate)
+library(here)
+library(skimr)
+library(janitor)
+library(httr)
+library(readxl)
+library(vroom)
+library(infer)
+library(readr)
+library(dplyr)
+
+```
+
+First we download the relevant dataset
+
+```{r weather_data, cache=TRUE}
+
+weather <- 
+  read_csv("https://data.giss.nasa.gov/gistemp/tabledata_v4/NH.Ts+dSST.csv", 
+           skip = 1, 
+           na = "***")
+
+```
+
+The table is now being pivoted to a longer table so we can see the relevant rows and columns more clearly
+
+```{r tidyweather}
+
+tidyweather <- weather %>% 
+  select(1:13) %>% 
+  pivot_longer(cols=2:13,
+               names_to="Month",
+               values_to="delta")
+```
+
+The dataframe needs to be shown in a graphical manner in order to make more sense. By plotting a scatter plot with the x-axis labeolled as the date and the y axis showing the deviation of data from it's base value. The red line is the line graph plotting the same points.
+
+```{r scatter_plot}
+
+tidyweather <- tidyweather %>%
+  mutate(date = ymd(paste(as.character(Year), Month, "1")),
+         month = month(date, label=TRUE),
+         year = year(date))
+
+ggplot(tidyweather, aes(x=date, y = delta))+
+  geom_point()+
+  geom_smooth(color="red") +
+  theme_bw() +
+  labs (
+    title = "Weather Anomalies", 
+    subtitle = "Measured as deviations from base value in degrees celsius", 
+    y="Temperature deviation from base value", 
+    x="Year"
+    )
+
+```
+
+From the graph it becomes very clear that since c. 1975, temperature deviations from the base value have consistently increased. 
+
+```{r facet_wrap, echo=FALSE}
+
+ggplot(tidyweather, aes(x=date, y = delta))+
+  geom_point()+
+  geom_smooth(color="red") +
+  theme_bw()+ 
+  labs (
+    title = "Weather Anomalies",
+    subtitle = "Measured as deviations from base value in degrees celsius",
+    y="Temperature deviation from base value", 
+    x="Year")+
+  facet_wrap(~month)
+```
+
+These charts show that temperature deviations in individual months vary between each other. For instance, in the winter months (December, January, February), deviations are particularly significant when compared to the summer months (June, July). Especially in areas with a lot of permafrost and icecaps, warmer winters can cause substantial ice-melts. 

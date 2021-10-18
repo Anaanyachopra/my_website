@@ -42,13 +42,13 @@ params:
         text: 'Design: '
         url: https://www.html5up.net
     social:
-      - icon: fa-twitter
+ #     - icon: fa-twitter
         #label: Twitter
         #url: https://www.twitter.com
-      - #icon: fa-facebook
+  #    - #icon: fa-facebook
         #label: Facebook
         #url: https://www.facebook.com
-      - #icon: fa-instagram
+  #    - #icon: fa-instagram
         #label: Instagram
         #url: https://www.instagram.com
       - icon: fa-github
@@ -93,9 +93,9 @@ params:
         subtitle: Papers and articles
         title: Interests
         url: blogs/magna
-      - image: pic04.jpg
-        subtitle: Nisl Sed Aliquam
-        title: Ipsum
+      - image: Climate Change.jpg
+        subtitle: To show the effects of climate change through temperature deviations per year and per month
+        title: Climate Change Analysis
         url: blogs/ipsum
       - image: pic05.jpg
         subtitle: Ipsum Dolor Sit Amet
