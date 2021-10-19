@@ -89,9 +89,9 @@ params:
         subtitle: Extended family
         title: History
         url: blogs/tempus
-      - image: pic03.jpg
-        subtitle: Papers and articles
-        title: Interests
+      - image: Gender disparity_1.jpg
+        subtitle: Workspace discrimination through the lens of statistics
+        title: Gender Disparity 
         url: blogs/magna
       - image: Climate Change.jpg
         subtitle: To show the effects of climate change through temperature deviations per year and per month
