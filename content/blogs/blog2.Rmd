@@ -3,7 +3,7 @@ categories:
 - ""
 - ""
 date: "2017-10-31T22:26:09-05:00"
-description: To view and compare the gender disparity in salary via hypothesis testing
+description: "To view and compare the gender disparity in salary via hypothesis testing"
 draft: false
 image: Gender_disparity_2.jpg
 keywords: ""
@@ -12,22 +12,6 @@ title: Gender disparity
 ---
 
 The follwing chunk of code uses two kinds of statistical tests - the 't-test' and the 'p-test' to prove the hypothesis that men have the upper hand in a work-environment. 
-
-```{r, setup, echo=FALSE}
-knitr::opts_chunk$set(
-  message = FALSE, 
-  warning = FALSE, 
-  tidy=FALSE,     # display code as typed
-  size="small")   # slightly smaller font for code
-options(digits = 3)
-
-# default figure size
-knitr::opts_chunk$set(
-  fig.width=6.75, 
-  fig.height=6.75,
-  fig.align = "center"
-)
-```
 
 
 ```{r load-libraries, echo=FALSE}

@@ -85,9 +85,9 @@ params:
         subtitle: Mumbai and London
         title: Education
         url: blogs/risk_return
-      - image: pic02.jpg
-        subtitle: Extended family
-        title: History
+      - image: Recession_1.jpg
+        subtitle: Can yield curves predict recessions?
+        title: Macroeconomic indicators
         url: blogs/tempus
       - image: Gender disparity_1.jpg
         subtitle: Workspace discrimination through the lens of statistics
