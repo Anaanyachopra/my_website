@@ -1,0 +1,258 @@
+---
+categories:
+- ""
+- ""
+date: "2017-10-31T22:42:51-05:00"
+description: "To view and compare the gender disparity in salary via hypothesis testing"
+draft: false
+image: Gender_disparity_2.jpg
+keywords: ""
+slug: aliquam
+title: Gender disparity
+---
+
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+
+<p>The following chunk of code uses two kinds of statistical tests - the ‘t-test’ and the ‘p-test’ to prove the hypothesis that men have the upper hand in a work-environment.</p>
+<pre><code>## -- Attaching packages --------------------------------------- tidyverse 1.3.1 --</code></pre>
+<pre><code>## v ggplot2 3.3.5     v purrr   0.3.4
+## v tibble  3.1.4     v dplyr   1.0.7
+## v tidyr   1.1.3     v stringr 1.4.0
+## v readr   2.0.1     v forcats 0.5.1</code></pre>
+<pre><code>## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()</code></pre>
+<pre><code>## Registered S3 method overwritten by &#39;mosaic&#39;:
+##   method                           from   
+##   fortify.SpatialPolygonsDataFrame ggplot2</code></pre>
+<pre><code>## 
+## The &#39;mosaic&#39; package masks several functions from core packages in order to add 
+## additional features.  The original behavior of these functions should not be affected by this.</code></pre>
+<pre><code>## 
+## Attaching package: &#39;mosaic&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:Matrix&#39;:
+## 
+##     mean</code></pre>
+<pre><code>## The following objects are masked from &#39;package:dplyr&#39;:
+## 
+##     count, do, tally</code></pre>
+<pre><code>## The following object is masked from &#39;package:purrr&#39;:
+## 
+##     cross</code></pre>
+<pre><code>## The following object is masked from &#39;package:ggplot2&#39;:
+## 
+##     stat</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     binom.test, cor, cor.test, cov, fivenum, IQR, median, prop.test,
+##     quantile, sd, t.test, var</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     max, mean, min, prod, range, sample, sum</code></pre>
+<pre><code>## 
+## Attaching package: &#39;ggthemes&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:mosaic&#39;:
+## 
+##     theme_map</code></pre>
+<pre><code>## Registered S3 method overwritten by &#39;GGally&#39;:
+##   method from   
+##   +.gg   ggplot2</code></pre>
+<pre><code>## here() starts at C:/Users/Anaanya/Desktop/my_website</code></pre>
+<pre><code>## 
+## Attaching package: &#39;skimr&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:mosaic&#39;:
+## 
+##     n_missing</code></pre>
+<pre><code>## 
+## Attaching package: &#39;janitor&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     chisq.test, fisher.test</code></pre>
+<pre><code>## Loading required package: lubridate</code></pre>
+<pre><code>## 
+## Attaching package: &#39;lubridate&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     date, intersect, setdiff, union</code></pre>
+<pre><code>## Loading required package: PerformanceAnalytics</code></pre>
+<pre><code>## Loading required package: xts</code></pre>
+<pre><code>## Loading required package: zoo</code></pre>
+<pre><code>## 
+## Attaching package: &#39;zoo&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     as.Date, as.Date.numeric</code></pre>
+<pre><code>## 
+## Attaching package: &#39;xts&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:dplyr&#39;:
+## 
+##     first, last</code></pre>
+<pre><code>## 
+## Attaching package: &#39;PerformanceAnalytics&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:graphics&#39;:
+## 
+##     legend</code></pre>
+<pre><code>## Loading required package: quantmod</code></pre>
+<pre><code>## Loading required package: TTR</code></pre>
+<pre><code>## Registered S3 method overwritten by &#39;quantmod&#39;:
+##   method            from
+##   as.zoo.data.frame zoo</code></pre>
+<pre><code>## == Need to Learn tidyquant? ====================================================
+## Business Science offers a 1-hour course - Learning Lab #9: Performance Analysis &amp; Portfolio Optimization with tidyquant!
+## &lt;/&gt; Learn more at: https://university.business-science.io/p/learning-labs-pro &lt;/&gt;</code></pre>
+<pre><code>## 
+## Attaching package: &#39;infer&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:mosaic&#39;:
+## 
+##     prop_test, t_test</code></pre>
+<pre><code>## Loading required package: airports</code></pre>
+<pre><code>## Loading required package: cherryblossom</code></pre>
+<pre><code>## Loading required package: usdata</code></pre>
+<pre><code>## 
+## Attaching package: &#39;openintro&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:mosaic&#39;:
+## 
+##     dotPlot</code></pre>
+<pre><code>## The following objects are masked from &#39;package:lattice&#39;:
+## 
+##     ethanol, lsegments</code></pre>
+<p>We download the ‘omega’ data file to see the relevant statistics for the gender gap between men and women</p>
+<pre class="r"><code>omega &lt;- read_csv(here::here(&quot;data&quot;, &quot;omega.csv&quot;))</code></pre>
+<pre><code>## Rows: 50 Columns: 3</code></pre>
+<pre><code>## -- Column specification --------------------------------------------------------
+## Delimiter: &quot;,&quot;
+## chr (1): gender
+## dbl (2): salary, experience</code></pre>
+<pre><code>## 
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r"><code>glimpse(omega) # examine the data frame</code></pre>
+<pre><code>## Rows: 50
+## Columns: 3
+## $ salary     &lt;dbl&gt; 81894.42, 69517.43, 68589.16, 74880.80, 65598.05, 76840.49,~
+## $ gender     &lt;chr&gt; &quot;male&quot;, &quot;male&quot;, &quot;male&quot;, &quot;male&quot;, &quot;male&quot;, &quot;male&quot;, &quot;male&quot;, &quot;ma~
+## $ experience &lt;dbl&gt; 16, 25, 15, 33, 16, 19, 32, 34, 1, 44, 7, 14, 33, 19, 24, 3~</code></pre>
+<pre class="r"><code># Summary Statistics of salary by gender
+mosaic::favstats (salary ~ gender, data=omega)</code></pre>
+<pre><code>##   gender      min       Q1   median       Q3      max     mean       sd  n
+## 1 female 47032.57 60337.83 64618.21 70033.15 78800.18 64542.84 7567.265 26
+## 2   male 54768.19 68331.31 74674.51 78568.11 84576.11 73239.13 7462.599 24
+##   missing
+## 1       0
+## 2       0</code></pre>
+<pre class="r"><code># Dataframe with two rows (male-female) and having as columns gender, mean, SD, sample size, 
+# the t-critical value, the standard error, the margin of error, 
+# and the low/high endpoints of a 95% condifence interval
+omega_summary&lt;-omega %&gt;% 
+  group_by(gender) %&gt;% 
+  summarise(mean=mean(salary),
+            SD=sd(salary),
+            count=n(),
+            t_critical=qt(p=0.975, count-1),
+            SE=SD/sqrt(count),
+            margin_of_error=t_critical*SE,
+            low_CI=mean-margin_of_error,
+            high_CI=mean+margin_of_error)
+omega_summary</code></pre>
+<pre><code>## # A tibble: 2 x 9
+##   gender   mean    SD count t_critical    SE margin_of_error low_CI high_CI
+##   &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt;      &lt;dbl&gt; &lt;dbl&gt;           &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;
+## 1 female 64543. 7567.    26       2.06 1484.           3056. 61486.  67599.
+## 2 male   73239. 7463.    24       2.07 1523.           3151. 70088.  76390.</code></pre>
+<p>By glimpsing through the above statistics, we can see that there is a significant difference in the mean salary received by women and men. While the number of responses is more or less the same for both genders, there is no overlap in the confidence intervals.
+In order to be more confident about the above assumption, we go ahead and do a hypothesis test.</p>
+<p>For this hypothesis test, we assume that men and women receive an equal salary i.e. the null hypothesis is 0.</p>
+<pre class="r"><code># hypothesis testing using t.test() 
+t.test(salary~gender, data=omega)</code></pre>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  salary by gender
+## t = -4.0891, df = 47.78, p-value = 0.0001651
+## alternative hypothesis: true difference in means between group female and group male is not equal to 0
+## 95 percent confidence interval:
+##  -12972.825  -4419.755
+## sample estimates:
+## mean in group female   mean in group male 
+##             64542.84             73239.13</code></pre>
+<pre class="r"><code># hypothesis testing using infer package
+#generating 1000 samples and calculating the difference in means between male and female salaries
+salary_in_null_world&lt;-omega%&gt;% 
+  specify(salary ~gender)%&gt;%
+  hypothesize(null = &quot;independence&quot;) %&gt;%
+  generate(reps =1000, type =&quot;permute&quot;) %&gt;% 
+  calculate(stat = &quot;diff in means&quot;,order = c(&quot;male&quot;, &quot;female&quot;)) 
+
+#getting the p_value for the observed difference in mean salary 
+p_value&lt;- salary_in_null_world %&gt;% 
+  get_pvalue(obs_stat=73239.13-64542.84, direction=&quot;both&quot;)</code></pre>
+<pre><code>## Warning: Please be cautious in reporting a p-value of 0. This result is an
+## approximation based on the number of `reps` chosen in the `generate()` step. See
+## `?get_p_value()` for more information.</code></pre>
+<pre class="r"><code>#printing the p_value
+p_value</code></pre>
+<pre><code>## # A tibble: 1 x 1
+##   p_value
+##     &lt;dbl&gt;
+## 1       0</code></pre>
+<pre class="r"><code>#visualizing the distribution that was generated earlier 
+salary_in_null_world%&gt;% visualize()</code></pre>
+<p><img src="/blogs/blog4_files/figure-html/hypothesis_testing-1.png" width="672" /></p>
+<p>Based on the results from the above analysis which we did using the ‘t-test’, we can <em>reject</em> our null hypothesis and conclude that the difference in salary for males and females is not equal to 0. The value of the t-statistics is -4.09 and hence is a statistically significant value.
+The hypothesis test based on inference returns a p-value which is near 0. The p-value being so close to 0 also indicates that the difference in means is statistically significant.</p>
+<p>If we now want to discuss the effect of experienced (executive level) males and females in the workspace, we can use the same statistical tests as mentioned above. The null hypothesis in this case will be that there is no difference in experiences.</p>
+<pre class="r"><code># Summary Statistics of salary by gender
+favstats (experience ~ gender, data=omega)</code></pre>
+<pre><code>##   gender min    Q1 median    Q3 max      mean       sd  n missing
+## 1 female   0  0.25    3.0 14.00  29  7.384615  8.51388 26       0
+## 2   male   1 15.75   19.5 31.25  44 21.125000 10.91593 24       0</code></pre>
+<pre class="r"><code># hypothesis testing using t.test() 
+t.test(experience~gender, data=omega)</code></pre>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  experience by gender
+## t = -4.9348, df = 43.472, p-value = 1.225e-05
+## alternative hypothesis: true difference in means between group female and group male is not equal to 0
+## 95 percent confidence interval:
+##  -19.353881  -8.126888
+## sample estimates:
+## mean in group female   mean in group male 
+##             7.384615            21.125000</code></pre>
+<pre class="r"><code># hypothesis testing using infer package
+#generating 1000 samples and calculating the difference in means between male and female experience
+salary_in_null_world&lt;-omega%&gt;% 
+  specify(experience ~gender)%&gt;%
+  hypothesize(null = &quot;independence&quot;) %&gt;%
+  generate(reps =1000, type =&quot;permute&quot;) %&gt;% 
+  calculate(stat = &quot;diff in means&quot;,order = c(&quot;male&quot;, &quot;female&quot;)) 
+
+#getting the p_value for the observed difference in mean experience
+p_value&lt;- salary_in_null_world %&gt;% 
+  get_pvalue(obs_stat=21.125-7.3846, direction=&quot;both&quot;)</code></pre>
+<pre><code>## Warning: Please be cautious in reporting a p-value of 0. This result is an
+## approximation based on the number of `reps` chosen in the `generate()` step. See
+## `?get_p_value()` for more information.</code></pre>
+<pre class="r"><code>#printing the p_value
+p_value</code></pre>
+<pre><code>## # A tibble: 1 x 1
+##   p_value
+##     &lt;dbl&gt;
+## 1       0</code></pre>
+<pre class="r"><code>#visualizing the distribution that was generated earlier 
+salary_in_null_world%&gt;% visualize()</code></pre>
+<p><img src="/blogs/blog4_files/figure-html/experience_stats-1.png" width="672" /></p>
+<p>The above analysis tells us that both the t-value of -4.93 as well as the minimal p-value indicate a statistically signficant response and we can reject the null hypothesis.</p>
+<p>If we wish to relate the two scenarios, we could assume that men get greater salary as they have more experience than women in their respective fields. We can also view this via a scatter plot</p>
+<pre class="r"><code>#drawing a scatterplot of experience and salary
+ggplot(omega, aes(x=experience, y=salary, color=gender))+
+  geom_point()+
+  geom_smooth(method=&quot;loess&quot;)+
+  labs(title=&quot;Relationship between experience and salary&quot;,
+       subtitle = &quot;By gender&quot;,
+       x=&quot;Experience in Years&quot;,
+       y=&quot;Salary in USD per Year&quot;)</code></pre>
+<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<p><img src="/blogs/blog4_files/figure-html/salary_exp_scatter-1.png" width="672" /></p>
+<p>This chart shows that there is a positive relationship between salary and experience, both in males and females. Across both genders, the incremental salary increase when having more experience levels off at c. 20 years of experience. At this point, more experience does not necessarily lead to higher salaries.</p>

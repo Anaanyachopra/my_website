@@ -97,14 +97,14 @@ params:
         subtitle: To show the effects of climate change through temperature deviations per year and per month
         title: Climate Change Analysis
         url: blogs/ipsum
-      - image: pic05.jpg
-        subtitle: Ipsum Dolor Sit Amet
-        title: Consequat
-        url: blogs/ipsum
-      - image: pic06.jpg
-        subtitle: Feugiat Amet Tempus
-        title: Etiam
-        url: blogs/ipsum
+      - image: Inflation_1.jpg
+        subtitle: Seeing how the CPI and its components change over time
+        title: Measuring Inflation
+        url: blogs/test1
+      - image: Berlin_1.jpg
+        subtitle: Data exploration and analysis for Air BnB's in Berlin
+        title: Air BnB Evaluation
+        url: blogs/test2
   two:
     buttonText: Get Started
     enable: yes

@@ -1,0 +1,69 @@
+---
+categories:
+- ""
+- ""
+date: "2017-10-31T22:42:51-05:00"
+description: "Looking at change in components for CPI as a measure of inflation"
+draft: false
+image: inflation_meme_1.jpg
+keywords: "Test for Rmd"
+slug: test1
+title: Inflation Measures
+---
+
+CPI or Consumer Price Index is used as a measure of inflation. It shows the change in a consumer's basket of goods each year to see how much prices have increased.
+
+We use the following code to see how the components of the Consumer Price Index has changed over the past few years. We manipulate the data to see what is the real reason behind consumer inflation
+
+```{r load-libraries, include=FALSE}
+library(tidyverse)  # Load ggplot2, dplyr, and all the other tidyverse packages
+library(mosaic)
+library(ggthemes)
+library(lubridate)
+library(here)
+library(skimr)
+library(janitor)
+library(httr)
+library(readxl)
+library(vroom)
+library(infer)
+library(readr)
+library(dplyr)
+
+```
+
+The data file "cpi_data.csv" contains the data for CPI components and their units. We separate the components to see the individual data for each of them. 
+
+```{r cpi_all_components_since_2016,  out.width="100%"}
+
+cpi_data <- read_csv(here::here("data", "cpi_data.csv"))
+
+cpi<-cpi_data %>% 
+  separate(title,into=c("generic","title"),sep=": ") %>%
+  separate(title,into=c("title", "generic_2"), sep=" in U.S.") %>% 
+  mutate(date=ymd(date)) %>% 
+  arrange(date) %>%
+  filter(year(date)>=2015) %>% 
+  group_by(component) %>%
+  mutate(year_change=value/lag(value,12) - 1) %>% 
+  mutate(max_change=max(year_change, na.rm=TRUE))
+
+cpi$max_change[cpi$title=="All Items"]<-500
+
+#By mutating the data we can arrange it to see the components and their values after 2015. This allows to understand recent changes in inflation patters.
+
+ggplot(cpi, aes(x=date, y=year_change))+
+  geom_point(aes(x=date, color=year_change>0))+
+  geom_smooth()+
+  facet_wrap(~reorder(title,desc(max_change)), scales="free")+
+  theme( axis.text = element_text( size = 7 ),axis.text.x = element_text( size = 7 ),axis.title = element_text( size = 7),   legend.position="none",strip.text = element_text(size = 7))+
+  scale_y_continuous(labels = scales::percent)+
+  labs(title = "Yearly change of US CPI (All Items) and its components",
+       subtitle = 'YoY change being positive or negative (Jan 2016 to Aug 2021)',
+       x="Time",
+       y="YoY change")
+
+
+```
+
+We facet wrap the plot to see the graphical changes for each individual component. This gives a better understanding of the value change for each component so we can track the actual changes. This manipulation of data allows us to understand the key factors driving the rise in inflation.

@@ -1,0 +1,58 @@
+---
+categories:
+- ""
+- ""
+date: "2017-10-31T22:42:51-05:00"
+description: "Looking at change in components for CPI as a measure of inflation"
+draft: false
+image: inflation_meme_1.jpg
+keywords: "Test for Rmd"
+slug: test1
+title: Inflation Measures
+---
+
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+
+<p>CPI or Consumer Price Index is used as a measure of inflation. It shows the change in a consumer’s basket of goods each year to see how much prices have increased.</p>
+<p>We use the following code to see how the components of the Consumer Price Index has changed over the past few years. We manipulate the data to see what is the real reason behind consumer inflation</p>
+<p>The data file “cpi_data.csv” contains the data for CPI components and their units. We separate the components to see the individual data for each of them.</p>
+<pre class="r"><code>cpi_data &lt;- read_csv(here::here(&quot;data&quot;, &quot;cpi_data.csv&quot;))</code></pre>
+<pre><code>## Rows: 18782 Columns: 9</code></pre>
+<pre><code>## -- Column specification --------------------------------------------------------
+## Delimiter: &quot;,&quot;
+## chr  (7): component, title, vintage_date, units, freq, seas_adj, updated
+## dbl  (1): value
+## date (1): date</code></pre>
+<pre><code>## 
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r"><code>cpi&lt;-cpi_data %&gt;% 
+  separate(title,into=c(&quot;generic&quot;,&quot;title&quot;),sep=&quot;: &quot;) %&gt;%
+  separate(title,into=c(&quot;title&quot;, &quot;generic_2&quot;), sep=&quot; in U.S.&quot;) %&gt;% 
+  mutate(date=ymd(date)) %&gt;% 
+  arrange(date) %&gt;%
+  filter(year(date)&gt;=2015) %&gt;% 
+  group_by(component) %&gt;%
+  mutate(year_change=value/lag(value,12) - 1) %&gt;% 
+  mutate(max_change=max(year_change, na.rm=TRUE))
+
+cpi$max_change[cpi$title==&quot;All Items&quot;]&lt;-500
+
+#By mutating the data we can arrange it to see the components and their values after 2015. This allows to understand recent changes in inflation patters.
+
+ggplot(cpi, aes(x=date, y=year_change))+
+  geom_point(aes(x=date, color=year_change&gt;0))+
+  geom_smooth()+
+  facet_wrap(~reorder(title,desc(max_change)), scales=&quot;free&quot;)+
+  theme( axis.text = element_text( size = 7 ),axis.text.x = element_text( size = 7 ),axis.title = element_text( size = 7),   legend.position=&quot;none&quot;,strip.text = element_text(size = 7))+
+  scale_y_continuous(labels = scales::percent)+
+  labs(title = &quot;Yearly change of US CPI (All Items) and its components&quot;,
+       subtitle = &#39;YoY change being positive or negative (Jan 2016 to Aug 2021)&#39;,
+       x=&quot;Time&quot;,
+       y=&quot;YoY change&quot;)</code></pre>
+<pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
+<pre><code>## Warning: Removed 612 rows containing non-finite values (stat_smooth).</code></pre>
+<pre><code>## Warning: Removed 612 rows containing missing values (geom_point).</code></pre>
+<p><img src="/blogs/New_blog_files/figure-html/cpi_all_components_since_2016-1.png" width="100%" /></p>
+<p>We facet wrap the plot to see the graphical changes for each individual component. This gives a better understanding of the value change for each component so we can track the actual changes. This manipulation of data allows us to understand the key factors driving the rise in inflation.</p>
