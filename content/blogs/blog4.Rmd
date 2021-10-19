@@ -2,12 +2,12 @@
 categories:
 - ""
 - ""
-date: "2017-10-31T22:26:09-05:00"
+date: "2017-10-31T22:42:51-05:00"
 description: "To view and compare the gender disparity in salary via hypothesis testing"
 draft: false
 image: Gender_disparity_2.jpg
 keywords: ""
-slug: magna
+slug: aliquam
 title: Gender disparity
 ---
 
@@ -43,7 +43,7 @@ mosaic::favstats (salary ~ gender, data=omega)
 
 # Dataframe with two rows (male-female) and having as columns gender, mean, SD, sample size, 
 # the t-critical value, the standard error, the margin of error, 
-# and the low/high endpoints of a 95% confidence interval
+# and the low/high endpoints of a 95% condifence interval
 omega_summary<-omega %>% 
   group_by(gender) %>% 
   summarise(mean=mean(salary),
@@ -85,6 +85,7 @@ p_value
 salary_in_null_world%>% visualize()
 
 ```
+
 Based on the results from the above analysis which we did using the 't-test', we can *reject* our null hypothesis and conclude that the difference in salary for males and females is not equal to 0. The value of the t-statistics is -4.09 and hence is a statistically significant value. 
 The hypothesis test based on inference returns a p-value which is near 0. The p-value being so close to 0 also indicates that the difference in means is statistically significant.
 
@@ -102,7 +103,7 @@ t.test(experience~gender, data=omega)
 salary_in_null_world<-omega%>% 
   specify(experience ~gender)%>%
   hypothesize(null = "independence") %>%
-  generate(reps =1000, type ="permute") %>% #in order to generate 1000 samples
+  generate(reps =1000, type ="permute") %>% 
   calculate(stat = "diff in means",order = c("male", "female")) 
 
 #getting the p_value for the observed difference in mean experience
@@ -116,6 +117,7 @@ p_value
 salary_in_null_world%>% visualize()
 
 ```
+
 The above analysis tells us that both the t-value of -4.93 as well as the minimal p-value indicate a statistically signficant response and we can reject the null hypothesis.
  
 If we wish to relate the two scenarios, we could assume that men get greater salary as they have more experience than women in their respective fields. We can also view this via a scatter plot
@@ -134,4 +136,4 @@ ggplot(omega, aes(x=experience, y=salary, color=gender))+
 
 ```
 
-This chart shows that there is a positive relationship between salary and experience, both in males and females. Across both genders, the incremental salary increase when having more experience levels off at c. 20 years of experience. At this point, more experience does not necessarily lead to higher salaries. 
+This chart shows that there is a positive relationship between salary and experience, both in males and females. Across both genders, the incremental salary increase when having more experience levels off at c. 20 years of experience. At this point, more experience does not necessarily lead to higher salaries.

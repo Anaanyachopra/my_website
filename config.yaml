@@ -81,10 +81,10 @@ params:
   tiles:
     enable: yes
     showcase:
-      - image: lbs.jpg
-        subtitle: Mumbai and London
-        title: Education
-        url: blogs/risk_return
+      - image: Gender disparity_1.jpg
+        subtitle: Workspace discrimination through the lens of statistics
+        title: Gender Disparity
+        url: blogs/aliquam
       - image: Recession_1.jpg
         subtitle: Can yield curves predict recessions?
         title: Macroeconomic indicators
