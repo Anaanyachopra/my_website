@@ -105,8 +105,8 @@ params:
         url: blogs/test1
       - image: Berlin_1.jpg
         subtitle: Data exploration and analysis for Air BnB's in Berlin
-        title: Air BnB Evaluation
-        url: blogs/test2
+        title: AirBnb Evaluation
+        url: blogs/testrmd
   two:
     buttonText: Get Started
     enable: yes

@@ -1,14 +1,15 @@
 ---
-categories:
+categories:  
+- ""    #the front matter should be like the one found in, e.g., blog2.md. It cannot be like the normal Rmd we used
 - ""
-- ""
-date: "2017-10-31T22:42:51-05:00"
-description: "Estimating effects of different variables on the prices of Air Bnb"
+date: "2021-09-30"
+description: Estimating effects of different variables on the prices of Air Bnb # the title that will show up once someone gets to this page
 draft: false
-image: Airbnb.jpg
-keywords: "Evaluation"
-slug: test2
-title: Air BnB Evaluation
+image: Airbnb.jpg # save picture in \static\img\blogs. Acceptable formats= jpg, jpeg, or png . Your iPhone pics wont work
+
+keywords: ""
+slug: testrmd # slug is the shorthand URL address... no spaces plz
+title: AirBnb Evaluation
 ---
 
 Air Bnb is one of the most common platforms to rent different types of properties. Different factors in different cities can be used as explanatory variables for price.
@@ -45,7 +46,6 @@ listings <- vroom("http://data.insideairbnb.com/germany/be/berlin/2021-09-21/dat
 
 
 ```
-
 ```{r glimpse, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
 glimpse<-dplyr::glimpse(listings) %>% 
   kable(caption = "Data Set Overview") %>%
@@ -85,6 +85,7 @@ skim<-(skimr::skim(listings)) %>%
 skim
   
 ```
+
 The reason for running a regression is to understand what percentage of price can be explained by the given variables. The statistical term used to measure this is called Rsquared. Generally, the higher the R squared, the more the explanatory variables can be used to justify the price.
 
 Before we run any statistical tests, we have to convert variables into numerical values. We also check for correlation to ensure that there is minimum error in the final R-squared value 
@@ -108,80 +109,4 @@ The above data shows us that the correlation between price and the number of peo
 
 There is actually a slightly negative correlation between minimum_nights and accommodates. As one would expect, a higher number of accommodates is correlated with a higher price. The density plots also help us see that for example review_scores_rating is left-skewed with a large number of rentals having very high ratings. Another interesting observation is that maximum_nights has a peak at 30, which means that many rentals cannot be booked for more than 30 days. This may be due to regulatory reasons, which keeps hosts to from renting out their properties for very long periods of time. 
 
-The following code is a general comparison of different variables to see how they affect each other
-
-```{r property_type, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
-
-#plotting the relationship between accommodates and beds per Airbnb rental
-ggplot(listings_new, aes(x=as.factor(accommodates), y=beds, color=accommodates))+
-  geom_boxplot()+
-  labs(title="1. Relationship between accommodates and beds per Airbnb rental",
-       x="Accommodates",
-       y="Nr. of beds")+
-  theme(legend.position = "none")
-
-#comparing Review Scores Rating between normal hosts and superhosts
-ggplot(listings_new, aes(x=as.factor(host_is_superhost), y=review_scores_rating,color=host_is_superhost))+
-  geom_boxplot()+
-  labs(title="2. Relationship between host type and review rating",
-       x="Is the host a superhost?",
-       y="Review Scores Rating")+
-  theme(legend.position = "none")
-
-#plotting relationship between room type and review ratings
-ggplot(listings_new, aes(x=as.factor(room_type), y=review_scores_rating, alpha=0.01, color=room_type))+
-  geom_boxplot()+
-  labs(title="3. Relationship between room type and review ratings",
-       x="Room type",
-       y="Review Scores Rating")+
-   theme(legend.position = "none")
-
-#ploting availability of rental by neighbourhood
-ggplot(listings_new, aes(x=as.factor(neighbourhood_group_cleansed), y=availability_365, color=neighbourhood_group_cleansed))+
-  geom_boxplot()+
-  labs(title="4. Availability of rentals by neighbourhood",
-       x="Neighbourhood",
-       y="Nr. of days available in the next 365 days")+
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))+
-  theme(legend.position = "none") 
-
-#filtering out the very expensive rentals to avoid strong skewness in the data 
-cheap_listings <- listings_new %>% 
-  filter(price<400)
-
-#plotting the relationship between room type and price
-ggplot(cheap_listings, aes(x=as.factor(room_type), y=price, color=room_type))+
-  geom_boxplot()+
-  labs(title="5. Relationship between room type and price",
-       x="Room type",
-       y="Price")+
-  theme(legend.position = "none")
-
-#Relationship between host demeanor and communication ratings
-ggplot(listings_new, aes(x=as.factor(host_has_profile_pic), y=review_scores_communication, color=host_has_profile_pic))+
-  geom_boxplot()+
-  labs(title="6. Relationship between host demeanor and communication ratings",
-       subtitle="Host profile picture is used as one indicator of host demeanor",
-       x="Does the host have a profile picture?",
-       y="Communication Rating")+
-    theme(legend.position = "none")
-
-
-
-
-
-```
-In the above steps, we try to get a feel of the dataset in general and see how variables are distributed
-
-In the first chart, we see a direct relationship between beds and number of people that can be accommodated in a specific rental. The inter-quartile range also increases with number of people who can stay in the property. One can assume that this is due to any extra beds in the form of sofa beds, which are likely more frequent in larger rentals. These more "improvised" beds are less likely to be found in smaller rentals. 
-
-The second chart tells us that 'superhosts' (those with many rentals and a lot of experience) have a higher median review rating and a smaller interquartile range. One can assume that superhosts more consistently provide a high quality rental experience 
-
-The third chart shows that review ratings among different room types vary. Shared rooms tend to have the worst ratings, which is likely due to the fact that the rental experience is dependent on another visitor. 
-
-Now that we have seen and interpreted the above data, we can format it and run the regression
-The fourth chart shows the availability of rentals in different neighbourhoods. For example, in "Mitte" the availability is a lot lower than in Spandau. This is likely due to the fact that Mitte is in a very central location, where the demand for Airbnbs is really high.  
-
-For the fifth chart, we filter out all the rentals that have a price >400 to avoid the distorting effect of very expensive rentals. Intuitively, we can see that hotel rooms are the most expensive as predicted. An interesting fact is that shared and private rooms have similar distributions probably as what shared rooms lack in privacy, they make up in space.
-
-From the sixt chart, we learn that whether a host has a profile picture seems to impact the communication rating for a specific rental. Hosts that have a picture tend to score higher in this category. After all, Airbnb customers seem to like to see who their host is and incorporate that into the communication rating they give. 
+After getting a feel of the dataset, we can now format it and go ahead with regressions
