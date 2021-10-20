@@ -8,7 +8,7 @@ draft: false
 image: Airbnb.jpg
 keywords: "Evaluation"
 slug: test2
-title: Air Bnb Prediction Model
+title: Air BnB Evaluation
 ---
 
 Air Bnb is one of the most common platforms to rent different types of properties. Different factors in different cities can be used as explanatory variables for price.

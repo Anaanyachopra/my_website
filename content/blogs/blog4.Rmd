@@ -3,137 +3,22 @@ categories:
 - ""
 - ""
 date: "2017-10-31T22:42:51-05:00"
-description: "To view and compare the gender disparity in salary via hypothesis testing"
+description: "Get to know me"
 draft: false
-image: Gender_disparity_2.jpg
+image: Linkedin_picture.jpg
 keywords: ""
 slug: aliquam
-title: Gender disparity
+title: About myself
 ---
 
-The following chunk of code uses two kinds of statistical tests - the 't-test' and the 'p-test' to prove the hypothesis that men have the upper hand in a work-environment. 
+My name is Anaanya Chopra and I am from Mumbai, India. I did my undergraduate degree at St. Xavier's College in Economics and Statistics. I am currently looking to work in Investment Banking after completing the Masters in Financial Analysis program at LBS. My career in finance was kickstarted by the following internships:
 
+-   Intern - Bimal Parekh & Co. (Chartered Accountants)
 
-```{r load-libraries, echo=FALSE}
-library(tidyverse)  # Load ggplot2, dplyr, and all the other tidyverse packages
-library(mosaic)
-library(ggthemes)
-library(GGally)
-library(readxl)
-library(here)
-library(skimr)
-library(janitor)
-library(broom)
-library(tidyquant)
-library(infer)
-library(openintro)
-library(lubridate)
-```
+-   Intern - NV Capital Services (Private Equity Fund)
 
-We download the 'omega' data file to see the relevant statistics for the gender gap between men and women
+-   Intern - Talerang (Edtech Startup)
 
-```{r load_omega_data}
-omega <- read_csv(here::here("data", "omega.csv"))
-glimpse(omega) # examine the data frame
-```
-```{r, confint_single_valiables}
-# Summary Statistics of salary by gender
-mosaic::favstats (salary ~ gender, data=omega)
+-   Business Analyst - RealPort (An online investment brokerage)
 
-
-# Dataframe with two rows (male-female) and having as columns gender, mean, SD, sample size, 
-# the t-critical value, the standard error, the margin of error, 
-# and the low/high endpoints of a 95% condifence interval
-omega_summary<-omega %>% 
-  group_by(gender) %>% 
-  summarise(mean=mean(salary),
-            SD=sd(salary),
-            count=n(),
-            t_critical=qt(p=0.975, count-1),
-            SE=SD/sqrt(count),
-            margin_of_error=t_critical*SE,
-            low_CI=mean-margin_of_error,
-            high_CI=mean+margin_of_error)
-omega_summary
-
-```
-By glimpsing through the above statistics, we can see that there is a significant difference in the mean salary received by women and men. While the number of responses is more or less the same for both genders, there is no overlap in the confidence intervals. 
-In order to be more confident about the above assumption, we go ahead and do a hypothesis test.
-
-For this hypothesis test, we assume that men and women receive an equal salary i.e. the null hypothesis is 0.
-
-```{r, hypothesis_testing}
-# hypothesis testing using t.test() 
-t.test(salary~gender, data=omega)
-
-# hypothesis testing using infer package
-#generating 1000 samples and calculating the difference in means between male and female salaries
-salary_in_null_world<-omega%>% 
-  specify(salary ~gender)%>%
-  hypothesize(null = "independence") %>%
-  generate(reps =1000, type ="permute") %>% 
-  calculate(stat = "diff in means",order = c("male", "female")) 
-
-#getting the p_value for the observed difference in mean salary 
-p_value<- salary_in_null_world %>% 
-  get_pvalue(obs_stat=73239.13-64542.84, direction="both")
-
-#printing the p_value
-p_value
-
-#visualizing the distribution that was generated earlier 
-salary_in_null_world%>% visualize()
-
-```
-
-Based on the results from the above analysis which we did using the 't-test', we can *reject* our null hypothesis and conclude that the difference in salary for males and females is not equal to 0. The value of the t-statistics is -4.09 and hence is a statistically significant value. 
-The hypothesis test based on inference returns a p-value which is near 0. The p-value being so close to 0 also indicates that the difference in means is statistically significant.
-
-If we now want to discuss the effect of experienced (executive level) males and females in the workspace, we can use the same statistical tests as mentioned above. The null hypothesis in this case will be that there is no difference in experiences.
-
-```{r, experience_stats}
-# Summary Statistics of salary by gender
-favstats (experience ~ gender, data=omega)
-
-# hypothesis testing using t.test() 
-t.test(experience~gender, data=omega)
-
-# hypothesis testing using infer package
-#generating 1000 samples and calculating the difference in means between male and female experience
-salary_in_null_world<-omega%>% 
-  specify(experience ~gender)%>%
-  hypothesize(null = "independence") %>%
-  generate(reps =1000, type ="permute") %>% 
-  calculate(stat = "diff in means",order = c("male", "female")) 
-
-#getting the p_value for the observed difference in mean experience
-p_value<- salary_in_null_world %>% 
-  get_pvalue(obs_stat=21.125-7.3846, direction="both")
-
-#printing the p_value
-p_value
-
-#visualizing the distribution that was generated earlier 
-salary_in_null_world%>% visualize()
-
-```
-
-The above analysis tells us that both the t-value of -4.93 as well as the minimal p-value indicate a statistically signficant response and we can reject the null hypothesis.
- 
-If we wish to relate the two scenarios, we could assume that men get greater salary as they have more experience than women in their respective fields. We can also view this via a scatter plot
-
-```{r, salary_exp_scatter}
-
-#drawing a scatterplot of experience and salary
-ggplot(omega, aes(x=experience, y=salary, color=gender))+
-  geom_point()+
-  geom_smooth(method="loess")+
-  labs(title="Relationship between experience and salary",
-       subtitle = "By gender",
-       x="Experience in Years",
-       y="Salary in USD per Year")
-
-
-```
-
-This chart shows that there is a positive relationship between salary and experience, both in males and females. Across both genders, the incremental salary increase when having more experience levels off at c. 20 years of experience. At this point, more experience does not necessarily lead to higher salaries.
+My hobbies include reading, baking and exercising. I am particularly passionate about behavioural finance and have read a number of books about this topic including 'Thinking Fast and Slow' by Daniel Kahneman and 'Predictably Irrational' by Dan Ariely. After working in the renewables industry for almost a year, my long-term goal would be to move back into that sector and makeimpa some kind of impact through my work in the financial services field.

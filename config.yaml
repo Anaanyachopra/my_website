@@ -8,8 +8,7 @@ params:
   banner:
     buttonText: Get Started
     subtitle: |-
-      #A RESPONSIVE SITE TEMPLATE DESIGNED BY HTML5 UP
-      #AND RELEASED UNDER THE CREATIVE COMMONS.
+      #A Porfolio showcasing my work as data analytics student
     title: Hi, my name is Anaanya
   blog: {I am currently a Masters in Financial Analysis Student at London Business School.My hometown is Mumbai, India and I did my undergraduate degree in Economics and Statistics from Mumbai University}
   contact:
@@ -71,6 +70,9 @@ params:
         url: '#'
       - name: Blogs
         url: blogs
+      - name: About myself
+        url: blogs/aliquam
+        
       #- name: Generic Blog
         #url: blogs/ipsum
       #- #name: Elements
@@ -81,9 +83,9 @@ params:
   tiles:
     enable: yes
     showcase:
-      - image: Gender disparity_1.jpg
-        subtitle: Workspace discrimination through the lens of statistics
-        title: Gender Disparity
+      - image: lbs.jpg
+        subtitle: Introducing myself - A short background
+        title: About myself
         url: blogs/aliquam
       - image: Recession_1.jpg
         subtitle: Can yield curves predict recessions?
@@ -108,12 +110,7 @@ params:
   two:
     buttonText: Get Started
     enable: yes
-    subtitle: "Nullam et orci eu lorem consequat tincidunt vivamus et sagittis libero.
-      \r\n    Mauris aliquet magna magna sed nunc rhoncus pharetra. \r\n    Pellentesque
-      condimentum sem. In efficitur ligula tate urna. Maecenas laoreet massa vel lacinia
-      pellentesque lorem ipsum dolor. \r\n    Nullam et orci eu lorem consequat tincidunt.
-      Vivamus et sagittis libero.\r\n    Mauris aliquet magna magna sed nunc rhoncus
-      amet pharetra et feugiat tempus."
-    title: Massa libero
+    subtitle: "This is a blog showing my work manipulating data and using it to study different types of projetcs. I have used multiple different files to conduct exploratory data analysis and used coding specifically for data visualization. A lot of this data has been used not only to conduct actual statistical tests, but also to get a feel of the datasets in general."
+    title: What is this?
     url: blogs
     
